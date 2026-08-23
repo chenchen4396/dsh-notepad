@@ -1,0 +1,34 @@
+{
+  "name": "dsh-prompt-assistant",
+  "version": "0.1.0",
+  "description": "Prompt assistant for the dsh web GUI: a settings tab to manage prompts — add / edit / delete / one-click copy — grouped by user-defined categories, persisted in localStorage.",
+  "type": "module",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node .smoke.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  }
+}
