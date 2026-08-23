@@ -12,8 +12,13 @@ Re-composing a prompt from scratch for every weekly report, email polish, code r
 - **Category management** — organize by scenario (code / writing / translation / thinking / meetings...), with add, rename, delete and reorder
 - **Centralized management** — the「随身笔记」settings page manages everything: add/edit/delete, reorder, search (`/` focuses, `Esc` clears)
 - **One-click copy** — click a card's title or content to copy it to the clipboard
-- **Your data, your file** — notes live in a local Markdown file (`~/.dsh/dsh-notepad/prompts.md`), editable by hand, easy to back up; uninstalling never deletes your data
-- **Restore defaults** — one click restores the built-in seed notes (the current file is auto-backed up as `prompts.backup-*.md` first)
+- **Import other people's notes** — 📥: pick a shared note file; two formats are supported:
+  - **dsh-notepad JSON** (this plugin's export format — `{"version":1,"notes":[…]}` or a bare array), compatible with similar exports from other tools
+  - **Any plain text / Markdown note file** (imported as a single note, the file name becomes its title)
+  - A preview dialog lets you choose **merge (recommended, duplicates skipped)** or **replace everything**
+- **Export to share** — 📤: download the whole library as a JSON file for backup, migration, or handing to someone else to import
+- **Your data, your file** — notes live in a local JSON file (`~/.dsh/dsh-notepad/notes.json`), clean structure, easy to back up; uninstalling never deletes your data
+- **Restore defaults** — one click restores the built-in seed notes (the current file is auto-backed up as `notes.json.backup-*` first)
 
 ## Install
 
@@ -31,6 +36,15 @@ Uninstall: `dsh plugin --profile web remove dsh-notepad` (your notes stay on dis
 
 ## Data file
 
-Notes are stored in `prompts.md` under the user data directory (default `~/.dsh/dsh-notepad/prompts.md`), in a Markdown format of `## category` / `### title` / content — safe to hand-edit; changes appear after refreshing the page. Data is migrated automatically when upgrading from the old name (dsh-prompt-assistant).
+Notes are stored in `notes.json` under the user data directory (default `~/.dsh/dsh-notepad/notes.json`):
 
-> Formerly dsh-prompt-assistant (提示词助手). Old install commands keep working (GitHub redirects the repository), and the old data directory is migrated on first launch.
+```json
+{
+  "version": 1,
+  "notes": [
+    { "id": "63609328", "category": "代码", "title": "代码解释", "content": "…", "updatedAt": 1712345678901 }
+  ]
+}
+```
+
+The `version` field is reserved for future format migrations; unknown keys are ignored on read. Safe to hand-edit; changes appear after refreshing the page. When `notes.json` does not exist yet, first launch writes the built-in seed notes into it — this single JSON file is the entire data format, with no legacy compatibility (first development).

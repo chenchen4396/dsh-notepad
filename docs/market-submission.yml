@@ -13,5 +13,5 @@ url: https://github.com/chenchen4396/dsh-notepad
 name: chenchen4396/dsh-notepad
 category: tools
 description:
-  en: 'Snippet library for the dsh web GUI: save, search, copy and organize frequently-used notes and prompts by category, with one-click access on the chat input toolbar.'
-  zh: 'dsh Web GUI 的随身笔记：按分类保存、搜索、复制常用提示词与片段，输入框旁一键取用。'
+  en: 'Snippet library for the dsh web GUI: save, search, copy and organize frequently-used notes and prompts by category, with one-click access on the chat input toolbar, plus JSON import/export.'
+  zh: 'dsh Web GUI 的随身笔记：按分类保存、搜索、复制常用提示词与片段，输入框旁一键取用，支持笔记 JSON 导入导出。'
