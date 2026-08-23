@@ -3,15 +3,15 @@
 # How to submit:
 #   1. Add the `dsh-plugin` topic to this repo on GitHub (Repo page → About → Topics).
 #   2. Fork https://github.com/awesome-dsh-plugin/awesome-dsh-plugin
-#   3. Add this file as data/plugins/chenchen4396__dsh-prompt-assistant.yml
+#   3. Add this file as data/plugins/chenchen4396__dsh-notepad.yml
 #      (keep ONLY the YAML block below — the comments in this file are local notes)
 #   4. Run `npm ci && node scripts/generate-readme.mjs` in the fork (regenerates READMEs)
 #   5. Open a PR. CI checks: dsh.bundle manifest (✓ this repo has it), repo age ≥ 1 day,
 #      ≥ 10 commits (⚠ this repo currently has 5 — finish more work first).
 
-url: https://github.com/chenchen4396/dsh-prompt-assistant
-name: chenchen4396/dsh-prompt-assistant
+url: https://github.com/chenchen4396/dsh-notepad
+name: chenchen4396/dsh-notepad
 category: tools
 description:
-  en: 'Prompt library manager for the dsh web GUI: save, search, copy and organize frequently-used prompts in user-defined categories.'
-  zh: 'dsh Web GUI 的提示词管理插件：按自定义分类保存、搜索、一键复制常用高频提示词。'
+  en: 'Snippet library for the dsh web GUI: save, search, copy and organize frequently-used notes and prompts by category, with one-click access on the chat input toolbar.'
+  zh: 'dsh Web GUI 的随身笔记：按分类保存、搜索、复制常用提示词与片段，输入框旁一键取用。'

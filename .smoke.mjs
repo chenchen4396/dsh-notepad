@@ -1,4 +1,4 @@
-// Smoke tests for dsh-prompt-assistant:
+// Smoke tests for dsh-notepad:
 //  1. prompts-md.js: parse / serialize round-trips and edge cases.
 //  2. client bundle: module contract + settings.section registration.
 //  3. host half: routes registered with the webServer service.
@@ -123,7 +123,7 @@ globalThis.fetch = async () => ({ ok: true, json: async () => ({ ok: true, promp
 await import('./lib/client.js')
 
 const mod = captured.module
-assert.equal(captured.loadedId, 'dsh-prompt-assistant')
+assert.equal(captured.loadedId, 'dsh-notepad')
 assert.deepEqual(mod.inject, ['slots'])
 const fakeCtx = {
   effect(cb) { return cb() }, // cordis semantics: callback runs now, return = cleanup
@@ -136,8 +136,8 @@ mod.apply(fakeCtx)
 assert.deepEqual(Object.keys(registrations).sort(), ['conversation.input.left', 'settings.section'])
 registrations['settings.section']()
 assert.equal(captured.entry.name, 'settings.section')
-assert.equal(captured.entry.id, 'prompt-assistant')
-assert.equal(captured.entry.label, '提示词')
+assert.equal(captured.entry.id, 'notepad')
+assert.equal(captured.entry.label, '随身笔记')
 // Render the section once: catches TDZ/ordering crashes (e.g. the blank-page
 // regression where `countOf` was used before its const initializer).
 const tree = captured.component()
@@ -149,7 +149,7 @@ assert.equal(typeof captured.component, 'function')
 // seat and renders with the zone props (inputActions / useInput).
 registrations['conversation.input.left']()
 assert.equal(captured.entry.name, 'conversation.input.left')
-assert.equal(captured.entry.id, 'prompt-assistant')
+assert.equal(captured.entry.id, 'notepad')
 const seat = captured.component({ inputActions: { setDraft() {}, submit() {} }, useInput: () => '' })
 assert.ok(seat !== null && typeof seat === 'object', 'composer seat renders a tree')
 assert.equal(typeof seat.type, 'function', 'composer seat is the quick-access component')
@@ -167,10 +167,10 @@ const host = await import('./lib/index.js')
 host.apply(hostCtx)
 assert.equal(routes.length, 2)
 assert.deepEqual(routes.map(r => r.path).sort(), [
-  '/api/dsh-prompt-assistant/prompts',
-  '/api/dsh-prompt-assistant/reset',
+  '/api/dsh-notepad/prompts',
+  '/api/dsh-notepad/reset',
 ])
 assert.ok(routes.every(r => r.kind === 'exact' && typeof r.handler === 'function'))
 
-console.log('PASS: md round-trip×5, client contract (settings.section / 提示词), host route registration')
+console.log('PASS: md round-trip×5, client contract (settings.section / 随身笔记), host route registration')
 process.exit(0)
