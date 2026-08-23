@@ -150,10 +150,12 @@ const hostCtx = {
 }
 const host = await import('./lib/index.js')
 host.apply(hostCtx)
-assert.equal(routes.length, 1)
-assert.equal(routes[0].kind, 'exact')
-assert.equal(routes[0].path, '/api/dsh-prompt-assistant/prompts')
-assert.equal(typeof routes[0].handler, 'function')
+assert.equal(routes.length, 2)
+assert.deepEqual(routes.map(r => r.path).sort(), [
+  '/api/dsh-prompt-assistant/prompts',
+  '/api/dsh-prompt-assistant/reset',
+])
+assert.ok(routes.every(r => r.kind === 'exact' && typeof r.handler === 'function'))
 
 console.log('PASS: md round-trip×5, client contract (settings.section / 提示词), host route registration')
 process.exit(0)
