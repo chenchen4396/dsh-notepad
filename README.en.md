@@ -47,4 +47,4 @@ Notes are stored in `notes.json` under the user data directory (default `~/.dsh/
 }
 ```
 
-The `version` field is reserved for future format migrations; unknown keys are ignored on read. Safe to hand-edit; changes appear after refreshing the page. When `notes.json` does not exist yet, first launch writes the built-in seed notes into it — this single JSON file is the entire data format, with no legacy compatibility (first development).
+The `version` field is reserved for future format migrations; unknown keys are ignored on read. Safe to hand-edit; changes appear after refreshing the page. This single JSON file is the entire data format — first launch writes the built-in default notes into it automatically.

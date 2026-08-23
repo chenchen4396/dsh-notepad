@@ -7,7 +7,7 @@
 #      (keep ONLY the YAML block below — the comments in this file are local notes)
 #   4. Run `npm ci && node scripts/generate-readme.mjs` in the fork (regenerates READMEs)
 #   5. Open a PR. CI checks: dsh.bundle manifest (✓ this repo has it), repo age ≥ 1 day,
-#      ≥ 10 commits (⚠ this repo currently has 5 — finish more work first).
+#      ≥ 10 commits (✓ this repo now has 10).
 
 url: https://github.com/chenchen4396/dsh-notepad
 name: chenchen4396/dsh-notepad
