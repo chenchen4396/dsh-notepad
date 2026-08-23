@@ -79,9 +79,16 @@ so it adapts to the active skin automatically.
 
 ## Install
 
+Install directly from GitHub (easiest for end users):
+
 ```sh
-dsh plugin --profile web add link:/root/code/dsh-prompt-assistant
+dsh plugin --profile web add github:chenchen4396/dsh-prompt-assistant
 ```
+
+- Pinning a commit is recommended for reproducibility:
+  `dsh plugin --profile web add github:chenchen4396/dsh-prompt-assistant#<commit-sha>`
+- Local development / offline: clone the repo, then
+  `dsh plugin --profile web add link:/path/to/dsh-prompt-assistant`.
 
 The command runs `pnpm add` in the profile and appends the package to
 `dsh.profile.bundles` because it declares `dsh.bundle`. Restart `dsh web`,
