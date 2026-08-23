@@ -1,112 +1,34 @@
-# dsh-prompt-assistant
+# dsh-prompt-assistant · 提示词助手
 
-Prompt assistant for the dsh web GUI: a settings section (tab) named
-**提示词** in the settings panel. Manage a prompt library — add many prompts,
-edit / delete, one-click copy, search, and organize prompts by user-defined
-categories.
+为 DeepSeek Harness Web GUI（`dsh web`）打造的提示词管理插件：把日常高频使用的提示词集中到一个地方，**一站式完成保存、搜索、复制与管理**，随用随取。
 
-## Data location: a Markdown file in the USER data directory
+## 这个插件解决什么
 
-Prompts live in a real Markdown file in the **user data directory** (never
-inside the installed package — npm-installed packages sit in a read-only /
-ephemeral pnpm store, so user data must not live there):
+写周报、润色邮件、代码审查、翻译、会议纪要……这些高频任务每次都现场组织 prompt 太麻烦。把常用提示词提前保存好，用时点一下就能复制进对话，不用再翻聊天记录或备忘录，也不用重复打字。
 
-```
-$DSH_HOME/dsh-prompt-assistant/prompts.md     (default: ~/.dsh/dsh-prompt-assistant/prompts.md)
-```
+## 主要功能
 
-```md
-## 分类名
+- **集中管理** — 在 dsh web 设置面板新增「提示词」页，所有高频提示词统一管理
+- **一键复制** — 点击卡片标题或内容即可复制进剪贴板，直接粘贴到对话开用
+- **自定义分类** — 按使用场景分门别类（代码 / 写作 / 翻译 / 思考 / 会议 / Agent 协作…），支持新增、重命名、删除与排序
+- **快速查找** — 按 `/` 聚焦搜索（标题 + 内容），`Esc` 清空；分类胶囊一键筛选
+- **数据归属你** — 提示词保存在本地用户目录的 Markdown 文件中，可手动编辑、随时备份；卸载插件不会丢失数据
 
-### 标题
-
-提示词内容...
-```
-
-- The **host half** (`lib/index.js`) owns the file: it parses/serializes
-  through `lib/prompts-md.js` and exposes two routes for the browser half:
-  - `GET /api/dsh-prompt-assistant/prompts` → `{ ok, prompts, md }`
-  - `PUT /api/dsh-prompt-assistant/prompts` (body `{ prompts }`) → writes the file
-- The **browser half** is a client: it never touches the file directly —
-  every add / edit / delete pushes the new list through the PUT route.
-- **The package's own `prompts.md` is only a seed**: on the very first run
-  (no user file yet) it is copied to the user directory once; all later
-  reads/writes go to the user file, so upgrading or reinstalling the plugin
-  never loses user data (and works on machines whose package dir is
-  read-only).
-- **You can edit the file by hand** (headings `##` / `###` are the format;
-  single-line `<!-- comments -->` are ignored); changes appear after
-  refreshing the GUI (or on the next page load).
-- `localStorage` (`dsh.prompt-assistant.v1`) is only a cache: it seeds the
-  UI before the first fetch, backs the UI when the file is unreachable
-  (header badge shows 「💾 本地缓存」 then), and is migrated into the file on
-  first load when the file is empty.
-
-## Layout
-
-- `cordis.patch.yml` — bundle patch: inserts the `prompt-assistant` roster row.
-- `lib/index.js` — host half: `webServer` routes serving the user data file.
-- `lib/prompts-md.js` — Markdown parse/serialize (the format's single home).
-- `lib/client.js` — browser half: settings section + prompt manager UI.
-- `prompts.md` — **seed** file inside the package (migrated on first run).
-- `.smoke.mjs` — Node smoke tests (`node .smoke.mjs`): md round-trips, client
-  contract, host route registration.
-
-## Usage
-
-1. Install (see below).
-2. Restart `dsh web`, open **Settings → 提示词**.
-3. **Use**: search filters title + content（按 `/` 聚焦搜索，`Esc` 清空）;
-   click a card's title or content to **copy it** (toast feedback, button
-   flashes ✓); long prompts expand/collapse (展开全文/收起); category pills
-   filter by group with counts.
-4. **Manage**: `＋ 新建提示词` opens a **modal dialog**（Esc / 点遮罩 /
-   取消关闭，**Ctrl+Enter** 保存）; `✎ 分类管理` opens a **category
-   management modal** — add new categories, rename any category (click
-   「N 条 · ✎」), and delete (two-step confirm; deleting a non-empty category
-   removes its prompts too, with the count stated); empty categories show as
-   dashed chips on the page (click one to add the first prompt to that
-   category; empty categories persist in localStorage since the md file
-   cannot represent a category without prompts); `编辑` turns a card into an
-   inline edit form; `删除` is two-step confirm; `↑`/`↓` reorder a prompt
-   within its category (persisted to prompts.md).
-5. The header shows a compact storage status dot（绿色=已保存到文件，黄
-   色=本地缓存；悬停显示完整路径/说明）and a per-save 「正在保存…/已保存」
-   indicator.
-
-The UI follows the dsh design tokens (`--dsw-alias-*` / `--dsw-font-family`),
-so it adapts to the active skin automatically.
-
-## Install
-
-Install directly from GitHub (easiest for end users):
+## 安装
 
 ```sh
 dsh plugin --profile web add github:chenchen4396/dsh-prompt-assistant
 ```
 
-- Pinning a commit is recommended for reproducibility:
-  `dsh plugin --profile web add github:chenchen4396/dsh-prompt-assistant#<commit-sha>`
-- Local development / offline: clone the repo, then
-  `dsh plugin --profile web add link:/path/to/dsh-prompt-assistant`.
+- **锁定版本**（推荐，保证可复现）：追加 `#<commit-sha>`，如
+  `dsh plugin --profile web add github:chenchen4396/dsh-prompt-assistant#12d703e`
+- **本地开发 / 离线环境**：clone 后用 `dsh plugin --profile web add link:/path/to/dsh-prompt-assistant`
+- **网络受限的环境**：可用 SSH URL `git+ssh://git@github.com/chenchen4396/dsh-prompt-assistant.git`
 
-The command runs `pnpm add` in the profile and appends the package to
-`dsh.profile.bundles` because it declares `dsh.bundle`. Restart `dsh web`,
-open Settings — the **提示词** tab appears next to **Hello**.
+安装完成后**重启 `dsh web`**，在 **设置 → 提示词** 中即可使用。
 
-Uninstall: `dsh plugin --profile web remove dsh-prompt-assistant` (drops the
-bundle layer; the prompts.md file stays on disk), then restart.
+卸载：`dsh plugin --profile web remove dsh-prompt-assistant`（提示词数据保留在磁盘，重装不丢）。
 
-## How it works
+## 数据文件
 
-The settings domain declares the `settings.section` slot: one settings page
-per registered entry (`id`, `order`, `label`). The web shell kernel provides
-`react` / `@deepseek-ai/dsh-client-runtime` to client bundles, and the host
-`webServer` service carries HTTP routes (`ctx.webServer.register` inside a
-`ctx.effect` callback — the effect runs now, its returned function is the
-unload cleanup). Everything is zero-build: both halves are hand-written JS in
-the kernel formats.
-
-Prompt IDs are derived from (category + title + content), so hand-editing the
-file never breaks React keys. Known limitation: content lines that start with
-`## ` or `### ` would be read as headings — keep them inside plain bullets.
+提示词存于用户目录下的 `prompts.md`（默认 `~/.dsh/dsh-prompt-assistant/prompts.md`），格式为 `## 分类` / `### 标题` / 内容 的 Markdown，可以直接手动编辑，刷新页面后生效。页面还提供「恢复默认值」按钮，可一键还原为插件内置的默认提示词（原数据会自动备份为 `prompts.backup-*.md`）。
