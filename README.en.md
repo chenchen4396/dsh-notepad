@@ -8,6 +8,7 @@ Writing weekly reports, polishing emails, code review, translation, meeting minu
 
 ## Features
 
+- **Quick access at the input box** — a「📋 提示词」button sits on the chat composer toolbar; click it to pop up the prompt library, search and drop a prompt into the draft in one click
 - **Centralized management** — a new「提示词」(Prompts) settings page inside the dsh web settings panel holds all your prompts in one place
 - **One-click copy** — click a card's title or content to copy it to the clipboard, ready to paste into a conversation
 - **Custom categories** — organize prompts by scenario (code / writing / translation / thinking / meetings / agent collaboration...), with add, rename, delete and reorder

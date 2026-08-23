@@ -99,9 +99,13 @@ globalThis.window = {
             useState: v => [v, () => {}],
             useSyncExternalStore: () => {
               storeCalls += 1
+              // Snapshot consumption order in this bundle: PromptSection
+              // takes list → source → chips; PromptQuickAccess then takes
+              // the list again (4th call).
               if (storeCalls === 1) return seedList // prompts
               if (storeCalls === 2) return 'file' // source
-              return [{ name: '空分类A', count: 0 }, { name: '测试', count: 1 }] // chips snapshot
+              if (storeCalls === 3) return [{ name: '空分类A', count: 0 }, { name: '测试', count: 1 }] // chips snapshot
+              return seedList // PromptQuickAccess list
             },
           }
         }
@@ -129,7 +133,7 @@ const fakeCtx = {
   },
 }
 mod.apply(fakeCtx)
-assert.deepEqual(Object.keys(registrations), ['settings.section'])
+assert.deepEqual(Object.keys(registrations).sort(), ['conversation.input.left', 'settings.section'])
 registrations['settings.section']()
 assert.equal(captured.entry.name, 'settings.section')
 assert.equal(captured.entry.id, 'prompt-assistant')
@@ -140,6 +144,17 @@ const tree = captured.component()
 assert.ok(tree !== null && typeof tree === 'object', 'section renders a tree')
 assert.equal(tree.type, 'div', 'section root is a div')
 assert.equal(typeof captured.component, 'function')
+
+// Composer quick access: the same bundle registers the conversation.input.left
+// seat and renders with the zone props (inputActions / useInput).
+registrations['conversation.input.left']()
+assert.equal(captured.entry.name, 'conversation.input.left')
+assert.equal(captured.entry.id, 'prompt-assistant')
+const seat = captured.component({ inputActions: { setDraft() {}, submit() {} }, useInput: () => '' })
+assert.ok(seat !== null && typeof seat === 'object', 'composer seat renders a tree')
+assert.equal(typeof seat.type, 'function', 'composer seat is the quick-access component')
+const seatRoot = seat.type(seat.props)
+assert.equal(seatRoot.type, 'div', 'composer seat root is a div')
 
 // ── 3. host half route registration ────────────────────────────────────────
 
