@@ -1,8 +1,15 @@
 {
-  "name": "dsh-notepad",
+  "name": "@chenchen4396/dsh-notepad",
   "version": "0.2.0",
   "description": "随身笔记 (dsh-notepad) for the dsh web GUI: a notes & snippet library — save, search, copy and organize frequently-used notes and prompts by category, with a one-click quick access on the chat input toolbar.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenchen4396/dsh-notepad.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
   },

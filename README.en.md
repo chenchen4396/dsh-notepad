@@ -30,6 +30,12 @@ Re-composing a prompt from scratch for every weekly report, email polish, code r
 dsh plugin --profile web add github:chenchen4396/dsh-notepad
 ```
 
+Or install straight from the npm package (faster, once published):
+
+```sh
+dsh plugin --profile web add @chenchen4396/dsh-notepad
+```
+
 - **Pin a commit** (recommended for reproducibility): append `#<commit-sha>`
 - **Local development / offline**: clone the repo, then `dsh plugin --profile web add link:/path/to/dsh-notepad`
 - **Restricted networks**: use the SSH URL `git+ssh://git@github.com/chenchen4396/dsh-notepad.git`

@@ -30,6 +30,12 @@
 dsh plugin --profile web add github:chenchen4396/dsh-notepad
 ```
 
+一键安装 npm 包版本（更快，需已发布）：
+
+```sh
+dsh plugin --profile web add @chenchen4396/dsh-notepad
+```
+
 - **锁定版本**（推荐，保证可复现）：追加 `#<commit-sha>`
 - **本地开发 / 离线环境**：clone 后用 `dsh plugin --profile web add link:/path/to/dsh-notepad`
 - **网络受限的环境**：可用 SSH URL `git+ssh://git@github.com/chenchen4396/dsh-notepad.git`
