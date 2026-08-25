@@ -58,3 +58,9 @@ dsh plugin --profile web add @chenchen4396/dsh-notepad
 ```
 
 `version` 字段为将来格式升级预留，读取时未知字段会被忽略；也可以手动编辑 JSON，刷新页面后生效。数据就是这一个 JSON 文件——首次启动时会自动写入内置默认笔记，编辑后刷新页面即生效。
+
+## 兼容性与许可
+
+- **适用环境**：DeepSeek Harness Web GUI（`dsh web`，`--profile web`）
+- **数据**：仅读写用户目录下的 `notes.json`，不访问网络、不收集任何数据
+- **许可**：MIT License
